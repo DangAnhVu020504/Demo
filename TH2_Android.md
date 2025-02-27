@@ -39,6 +39,103 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable
+fun BMICalculator() {
+    var name by remember { mutableStateOf("") }
+    var weight by remember { mutableStateOf("") }
+    var height by remember { mutableStateOf("") }
+    var bmiResult by remember { mutableStateOf("") }
+    var bmiCategory by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .height(50.dp)
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Chương trình tính chỉ số BMI",
+            style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Bold,)
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Nhập tên") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        OutlinedTextField(
+            value = height,
+            onValueChange = { height = it },
+            label = { Text("Chiều cao (m)") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        OutlinedTextField(
+            value = weight,
+            onValueChange = { weight = it },
+            label = { Text("Cân nặng (kg)") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            onClick = {
+                val h = height.toFloatOrNull()
+                val w = weight.toFloatOrNull()
+                if (h != null && w != null && h > 0) {
+                    val bmi = w / (h * h)
+                    bmiResult = "Chỉ số BMI: %.2f".format(bmi)
+
+                    bmiCategory = when {
+                        bmi < 18 -> "Người gầy"
+                        bmi < 25 -> "Người bình thường"
+                        bmi < 30 -> "Béo phì độ I"
+                        bmi < 35 -> "Béo phì độ II"
+                        else -> "Béo phì độ III"
+                    }
+                } else {
+                    bmiResult = "Vui lòng nhập đúng giá trị!"
+                    bmiCategory = ""
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Blue,
+                contentColor = Color.Yellow
+            )
+
+        ) {
+            Text(text = "Tính BMI", fontSize = 18.sp)
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(text = bmiResult, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Blue)
+        Text(text = bmiCategory, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.Red)
+    }
+}
+
+
+
+
+
+
+
+
 /*@Composable
 fun SpringScreen() {
     Column(
